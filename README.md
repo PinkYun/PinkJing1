@@ -8,3 +8,5 @@
 
 
 觉得有用麻烦给一个星星，谢谢，如果有可以改进的方法，也可以提出来，志在分享与学习!!!
+
+可以直接在https://pinkyun.github.io/PinkJing1/jQuery-demo/index该链接显示效果
