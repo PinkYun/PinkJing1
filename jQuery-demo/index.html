@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>我的地图</title>
+    <style>
+        html,body {
+          background-color: #3e3d3e;
+        }
+        #main {
+          width: 1200px;
+          height: 1000px;
+          margin: -60px auto;
+        }
+        .list_box {
+          width: 320px;
+          height: 800px;
+          max-height: 800px;
+          overflow: auto;
+          background-color: #fff;
+          position: absolute;
+          right: 30px;
+          top: 60px;
+          border-radius: 10px;
+        }
+        .list_box .list {
+          width: 260px;
+          height: 80px;
+          background-color: #d4edda;
+          border-radius: 10px;
+          padding-left: 10px;
+          padding-top: 10px;
+          box-sizing: border-box;
+          margin: 20px auto 0px;
+          color: #155724;
+          margin-bottom: 10px;
+          box-shadow: 4px 4px 0px rgba(71, 71, 71,.2);
+        } 
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+    <!-- 右侧数据列表 -->
+    <div class="list_box">
+        
+    </div>
+  </body>
+  <!-- <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script> -->
+  <!-- <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.min.js"></script> -->
+  <script src="./js/jquery-1.6.min.js"></script>
+  <script src="./js/echarts.min.js"></script>
+  <script src="./js/china.js"></script>
+  <script>
+    var selected_name = "";  //选中的名字
+    var areaArr = ['上海', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东', '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '北京', '天津', '重庆', '香港', '澳门'];
+    var myChart = echarts.init(document.getElementById("main"));
+    var option = {
+      tooltip: {
+        show: false,//                    show: false //不显示提示标签
+        formatter: "", //提示标签格式
+        backgroundColor: "#ff7f50", //提示标签背景颜色
+        textStyle: { color: "#fff" } //提示标签字体颜色
+      },
+      series: [
+        {
+          type: "map",
+          mapType: "china",
+          label: {
+            normal: {
+              show: true, //显示省份标签
+              textStyle: { color: "#4c2a00" } //省份标签字体颜色
+            },
+            emphasis: {
+              //对应的鼠标悬浮效果
+              show: true,
+              textStyle: { color: "#800080" }
+            }
+          },
+          itemStyle: {
+            normal: {
+              borderWidth: 0.5, //区域边框宽度
+              borderColor: "#202b00", //区域边框颜色  
+              areaColor: "#edc338" //区域颜色
+            },
+            emphasis: {
+              borderWidth: 0.5,
+              borderColor: "#4b0082",
+              areaColor: "#fff"
+              
+            }
+          },
+          data: [
+            { name: '广东', selected: true ,backgroundImage: '../jquery_map/images/fi1.png'} //福建为选中状态
+          ]
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+    // myChart.on("mouseover", function(params) {
+    //   var dataIndex = params.dataIndex;
+    //   // console.log(params);
+    // });
+    
+    function getArea(){
+      var idx = 0;
+      idx = Math.floor(Math.random()*areaArr.length)
+      // console.log(areaArr[idx])
+      selected_name = areaArr[idx]
+      var date = new Date()
+      var time = date.toLocaleTimeString()
+      // var time = date.toLocaleString() // 返回当前时间段
+      // console.log(time)
+      $('.list_box').prepend(`<div class="list">
+            <div class="time">当前时间: ${time}</div>
+            <div class="area">当前选中的省份: ${selected_name}</div>
+        </div>`)
+      // 改变当前选中的省份 
+      option.series[0].data[0].name = selected_name
+      option.series[0].data[0].selected = true
+      // console.log(option.series[0].data[0].name);
+      myChart.setOption(option);   
+      setTimeout(()=>{
+        option.series[0].data[0].selected = false
+        myChart.setOption(option);      
+      },500)
+      setTimeout(()=>{
+        option.series[0].data[0].selected = true
+        myChart.setOption(option);
+      },700)
+    }
+    getArea()
+    var interval = setInterval(()=>{
+      // console.log('111')
+       getArea() 
+       
+    },3000)
+    
+
+    
+  </script>
+</html>
